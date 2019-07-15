@@ -1,0 +1,48 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Configuration>
+
+	<!-- Appender, Layout 설정 -->
+	<Appenders>
+		<Console name="console" target="SYSTEM_OUT">
+			<PatternLayout pattern="%d %5p [%c] %m%n" />
+		</Console>
+		<RollingFile name="compfile"
+			fileName="path/to/logs/file/comp.log"
+			filePattern="path/to/logs/file/comp_%i.log"
+			append="true">
+			<Policies>
+				<SizeBasedTriggeringPolicy size="10KB" />
+			</Policies>
+			<PatternLayout
+				pattern='{ "time" : "%d{yyyy-MM-dd hh:mm:ss}", %m }\n' />
+		</RollingFile>
+		<RollingFile name="newsfile"
+			fileName="path/to/logs/file/news.log"
+			filePattern="path/to/logs/file/news_%i.log"
+			append="true">
+			<Policies>
+				<SizeBasedTriggeringPolicy size="10KB" />
+			</Policies>
+			<PatternLayout
+				pattern='{ "time" : "%d{yyyy-MM-dd hh:mm:ss}", %m }\n' />
+		</RollingFile>
+	</Appenders>
+
+	<!-- Logger 설정 -->
+	<Loggers>
+		<Logger name="complogger" level="INFO" additivity="false">
+			<AppenderRef ref="console" />
+			<AppenderRef ref="compfile" />
+		</Logger>
+		<Logger name="newslogger" level="INFO" additivity="false">
+			<AppenderRef ref="console" />
+			<AppenderRef ref="newsfile" />
+		</Logger>
+		<Root level="ERROR">
+			<AppenderRef ref="console" />
+			<AppenderRef ref="errorfile" />
+		</Root>
+	</Loggers>
+
+</Configuration>
+

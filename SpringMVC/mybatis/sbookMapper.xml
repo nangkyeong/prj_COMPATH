@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> <!-- 위 세줄의 버전이 다 맞아야 한다. 그래야 뒤에서 <mapper.. 할 수 있음 -->
+<mapper namespace="sbookMapper"> <!-- 분류. 다른 종류의 CRUD를 할 때 -->
+	<!-- 분류. 다른 종류의 CRUD를 할 때 -->
+
+	<select resultType="com.user.CPSbookEntity" id="selectall">
+		select * from
+		scrapbook
+	</select>
+
+	<select resultType="com.user.CPSbookEntity" id="selectbyid">
+		select * from
+		scrapbook where id = #{id}
+	</select>
+
+	<select resultType="com.user.CPSbookEntity" id="findbysnum">
+	select * from
+		scrapbook where scrapbook_num = #{scrapbook_num}
+	</select>
+
+	<select resultType="com.user.CPSbookEntity" id="findnewsb">
+	select * from
+		scrapbook where id=#{id} and title=#{title}
+	</select>
+
+	<delete id="delete" parameterType="com.user.CPSbookEntity">
+	delete from scrapbook where
+		scrapbook_num = #{scrapbook_num}
+	</delete>
+
+	<insert id="insert" parameterType="com.user.CPSbookEntity">
+	insert into scrapbook values
+		(scrap_seq.nextval, #{title}, SYSDATE, #{id}, #{write_form},#{contents}, #{input_URL1}, #{input_URL2}, #{input_URL3})
+	</insert>
+
+	<update id="update" parameterType="com.user.CPSbookEntity">
+	update scrapbook set
+		title=#{title}, contents=#{contents}, input_URL1= #{input_URL1},
+		input_URL2= #{input_URL2}, input_URL3= #{input_URL3} where
+		scrapbook_num = #{scrapbook_num}
+	</update>
+
+	<update id="share" parameterType="com.user.CPSbookEntity">
+	update user_logdata set	Sbook_Check=1 where Sbook_Number = #{scrapbook_num}
+	</update>
+
+	<update id="mysbookslike" parameterType="com.user.UserLike">update User_logData set
+		Sbook_Check=1 where id=#{id} and Sbook_Number=#{sbook_number}
+	</update>
+</mapper>
