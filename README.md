@@ -36,7 +36,7 @@ There are two appenders, because I switched the way to collect logs.
 ### 1. RollingFileAppender
 
 At first, I wanted to generate log file at local path. 
-From CPLoggerjava you can check codes to generate log messages.
+From CPLogger.java you can check codes to generate log messages.
 log4j2.xml includes path for log files and log pattern. 
 
 ### 2. FlumeAppender
