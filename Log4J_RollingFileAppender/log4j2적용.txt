@@ -35,7 +35,7 @@
 5. log 필요한 부분 controller에 logger 코드작성
 [ ip, 비회원일경우 session id, 회원일 경우 user id를 log파일에 기록 ]
 
-	//HttpServletRequest 받아오기 : 윤기님이 보내준 link 참고
+	//HttpServletRequest 받아오기 
 	HttpServletRequest req = ((ServletRequestAttributes)RequestContextHolder.currentRequestAttributes()).getRequest();
 	//ip 가져오기
 	String ip = req.getHeader("X-FORWARDED-FOR");
