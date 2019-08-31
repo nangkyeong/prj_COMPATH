@@ -11,9 +11,9 @@ In this repository, you can find 3 features as follows.
 2. Log Collection 
 3. Log ETL with Spark Streaming
 
-## Spring MVC Pattern
+## Spring DI, AOP
 
-There are two controller classes, for mypage and Sbook controllers.
+There are two controller classes, for mypage and Sbook controllers. Those are programmed to experience DI feature of Spring. Also, you can check logging codes with @Around annotation.
 
 1. Mypage
     In this page, you can see lists of news, companies, recruit posts, other users' Sbooks.
@@ -29,6 +29,8 @@ For accessing Oracle Database, we used MyBatis.
 2. Util class to declare static SqlSessionFactory variable
 3. XML mapper files
 
+3. Log Advice
+Please check aop directory.
 
 ## Log Collection
 
