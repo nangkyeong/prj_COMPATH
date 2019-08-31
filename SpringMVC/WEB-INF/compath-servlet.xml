@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:c="http://www.springframework.org/schema/c"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:mongo="http://www.springframework.org/schema/data/mongo"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc-4.3.xsd
+		http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.3.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd
+		http://www.springframework.org/schema/data/mongo http://www.springframework.org/schema/data/mongo/spring-mongo-1.10.2.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd">
+
+
+	<context:annotation-config />
+	<context:component-scan base-package="com.*" />
+	<aop:aspectj-autoproxy></aop:aspectj-autoproxy>
+
+	<bean id="viewResolver" class="org.springframework.web.servlet.view.UrlBasedViewResolver">
+		<property name="viewClass" 	value="org.springframework.web.servlet.view.JstlView"></property>
+		<property name="prefix" value="/WEB-INF/"></property>
+		<property name="suffix" value=".jsp"></property>
+		<property name="contentType" value="text/html; charset=UTF-8"></property>
+	</bean>
+	
+	<bean class="org.springframework.data.mongodb.core.MongoTemplate" id="mongoTemplate">
+		<constructor-arg name="mongo" ref="mongo" />
+		<constructor-arg value="news" name="databaseName" />
+	</bean>
+
+
+	
+	<bean class="org.springframework.data.mongodb.core.MongoClientFactoryBean"	id="mongo">
+		<property value="localhost" name="host" />
+		<property value="27777" name="port" />
+	</bean>
+
+	<mongo:db-factory id="mongoDbFactory" dbname="news" />
+	<mongo:mapping-converter id="converter" />
+
+</beans>
