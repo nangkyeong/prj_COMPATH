@@ -25,9 +25,9 @@ here, you will find CRUD features of sbook, and sharing freature as well.
 
 For accessing Oracle Database, we used MyBatis.
 
-1. Configuration for Oracle access
-2. Util class to declare static SqlSessionFactory variable
-3. XML mapper files
+* Configuration for Oracle access
+* Util class to declare static SqlSessionFactory variable
+* XML mapper files
 
 3. Log Advice
 Please check aop directory.
