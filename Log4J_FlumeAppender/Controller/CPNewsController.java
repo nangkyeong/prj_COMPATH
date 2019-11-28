@@ -26,7 +26,7 @@ public class CPNewsController {
 	@Autowired
 	private CPNewsService cpns;
 
-	//log용 String 배열
+	// news_number, 뉴스 번호를 담을 맵 
 	private Map<String, String> tolog = new HashMap<>();
 
 	@RequestMapping("/news_body.do")
@@ -43,9 +43,12 @@ public class CPNewsController {
 			e.printStackTrace();
 		}
 
-		// news log 남기기 
+		// logging part
+		// HttpServletRequest, 조회한 뉴스 번호를 tolog에 담기
 		HttpServletRequest req = ((ServletRequestAttributes)RequestContextHolder.currentRequestAttributes()).getRequest();
 		tolog.put("news_number", number);
+		
+		// 뉴스 번호 로깅 객체 생성 후 로그 내용 매핑 
 		CPLogger newslogger = new CPLogger("NEWS");
 		newslogger.mapLogVal(req, tolog);
 

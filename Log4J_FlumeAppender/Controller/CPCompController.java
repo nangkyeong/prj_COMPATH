@@ -28,7 +28,7 @@ public class CPCompController {
 	@Autowired
 	private CPRecruitService recservice;
 
-	// log용 String 배열
+	// crp_no, 기업번호를 담을 맵 
 	private Map<String, String> tolog = new HashMap<>();
 
 
@@ -37,10 +37,13 @@ public class CPCompController {
 
 		ModelAndView compinfoo = new ModelAndView("view/comp/comp_detail");
 		List<CompanyEntity> compinfo = compservice.compinfo(crp_nm_i);
-		// HttpServletRequest, crp_nm_i를 map에 담기
+		
+		// logging part
+		// HttpServletRequest, 조회한 기업번호를 tolog에 담기
 		HttpServletRequest req = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
-		// logger 생성하고 파일에 기록
 		tolog.put("crp_no", compinfo.get(0).getCrp_no());
+		
+		// 기업 번호 로깅 객체 생성 후 로그 내용 매핑 
 		CPLogger complogger = new CPLogger("COMP");
 		complogger.mapLogVal(req, tolog);
 

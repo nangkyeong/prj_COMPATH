@@ -20,9 +20,6 @@ public class FlumeRpcClient {
 		this.hostname = hostname;
 		this.port = port;
 		this.client = RpcClientFactory.getDefaultInstance(hostname, port);
-		// Use the following method to create a thrift client (instead of the above
-		// line):
-		// this.client = RpcClientFactory.getThriftInstance(hostname, port);
 	}
 
 	public void sendEventToFlume(String logmsg) {
@@ -30,7 +27,7 @@ public class FlumeRpcClient {
 	}
 
 	public void sendEventToFlume(String logmsg, Map<String, String> header) {
-		// Create a Flume Event object that encapsulates the sample data
+		// flume 서버로 전송할 메시지 이벤트 객체 생성 
 		Event event = EventBuilder.withBody(logmsg, Charset.forName("UTF-8"), header);
 
 		// Send the event
@@ -41,19 +38,17 @@ public class FlumeRpcClient {
 			client.close();
 			client = null;
 			client = RpcClientFactory.getDefaultInstance(hostname, port);
-			// Use the following method to create a thrift client (instead of the above
-			// line):
-			// this.client = RpcClientFactory.getThriftInstance(hostname, port);
 		}
 	}
  
-	//time, ip, sessionId, userid, gender, finalEdu, careerDur, keytolog, valtolog
 	public String getLogMessage(String time, String ip, String sessionId, String id, String keytolog, String valtolog) {
-		// 기록할 로그 목록 = time,ip,sessionID, id, keytolog, valtolog
+		// 기록할 로그 목록을 매개변수로 받음 = time, ip, sessionID, id, keytolog, valtolog
+		
 		// org.apache.logging.log4j.message.ParameterizedMessage {}를 이용한 패턴 사용 가능
 		ParameterizedMessage buildmsg = new ParameterizedMessage(
 				"{\"time\" : \"{}\", \"ip\" : \"{}\", \"sessionID\" : \"{}\", \"id\": \"{}\", \"{}\" : \"{}\"}\n",
 				new Object[] { time, ip, sessionId, id, keytolog, valtolog }, new Throwable());
+		
 		String message = buildmsg.getFormattedMessage();
 		return message;
 	}
