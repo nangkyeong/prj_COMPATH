@@ -1,47 +1,49 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-  "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> <!-- 위 세줄의 버전이 다 맞아야 한다. 그래야 뒤에서 <mapper.. 할 수 있음 -->
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
 
-<mapper namespace="mypageMapper"> <!-- 분류. 다른 종류의 CRUD를 할 때 -->
-
-	<!-- mypage my scrapbook list -->
+<mapper namespace="mypageMapper"> 
 
 
-	<select resultType="com.user.CPSbookEntity" id="myownsblist">select * from
-		scrapbook where id =#{id} </select>
+	<select resultType="com.user.CPSbookEntity" id="myownsblist">
+		select * from scrapbook where id =#{id} 
+	</select>
 
 	<select resultType="com.user.CPSbookEntity" id="mysbooklike">
 		select * from scrapbook where scrapbook_num in (select sbook_number from User_logData where id=#{id} and sbook_check=1) 
 	</select>
-	<select resultType="com.comp.CompanyEntity" id="mycomplist">select * from
-		dartdetail where crp_no in (select Company_Number from User_logData
-		where id=#{id} and Company_Check =1) </select>
-
-	<select resultType="com.comp.recruit.RecruitEntity"
-		id="mynewslist">select * from news_main where News_Number in (select News_Number
-		from User_logData where id=#{id} and News_Check = 1) </select>
-
-	<select resultType="com.comp.recruit.RecruitEntity"
-		id="myrecruitlist">select * from recruitdetail where empSeqno in (select
-		Recruit_Number from User_logData where id=#{id} and Recruit_Check = 1)
+	
+	<select resultType="com.comp.CompanyEntity" id="mycomplist">
+		select * from dartdetail where crp_no in (select Company_Number from User_logData where id=#{id} and Company_Check =1) 
 	</select>
 
-	<select resultType="com.user.CPSbookEntity" id="findsbook">select * from
-		scrapbook where scrapbook_num=#{scrapbook_num} </select>
+	<select resultType="com.comp.recruit.RecruitEntity" id="mynewslist">
+		select * from news_main where News_Number in (select News_Number from User_logData where id=#{id} and News_Check = 1) 
+	</select>
 
-	<update id="mynewsunlike" parameterType="com.user.UserLike">update User_logData set
-		News_Check=0 where id=#{id} and News_Number=#{news_number} </update>
+	<select resultType="com.comp.recruit.RecruitEntity" id="myrecruitlist">
+		select * from recruitdetail where empSeqno in (select Recruit_Number from User_logData where id=#{id} and Recruit_Check = 1)
+	</select>
 
-	<update id="mycompunlike" parameterType="com.user.UserLike">update User_logData set
-		Company_Check=0 where id=#{id} and Company_Number=#{comp_number}
+	<select resultType="com.user.CPSbookEntity" id="findsbook">
+		select * from scrapbook where scrapbook_num=#{scrapbook_num} 
+	</select>
+
+	<update id="mynewsunlike" parameterType="com.user.UserLike">
+		update User_logData set News_Check=0 where id=#{id} and News_Number=#{news_number} 
 	</update>
 
-	<update id="myrecunlike" parameterType="com.user.UserLike">update User_logData set
-		Company_Check=0 where id=#{id} and Company_Number=#{comp_number}
+	<update id="mycompunlike" parameterType="com.user.UserLike">
+		update User_logData set Company_Check=0 where id=#{id} and Company_Number=#{comp_number}
 	</update>
 
-	<update id="mysbooksunlike" parameterType="com.user.UserLike">update User_logData
-		set Sbook_Check=0 where id=#{id} and Sbook_Number=#{sbook_number}
+	<update id="myrecunlike" parameterType="com.user.UserLike">
+		update User_logData set Company_Check=0 where id=#{id} and Company_Number=#{comp_number}
 	</update>
+
+	<update id="mysbooksunlike" parameterType="com.user.UserLike">
+		update User_logData set Sbook_Check=0 where id=#{id} and Sbook_Number=#{sbook_number}
+	</update>
+	
 </mapper>

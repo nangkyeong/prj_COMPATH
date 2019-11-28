@@ -28,14 +28,14 @@ public class CPCompController {
 	@Autowired
 	private CPRecruitService recservice;
 
-	// log용 String 배열
+	// crp_no, 기업번호를 담을 맵 
 	private Map<String, String> tolog = new HashMap<>();
 
-	@RequestMapping("/comp_all.do") // search 버튼의 crp_nm 파람을 받아서 해당 기업의 객체들을 불러올거임.
+	@RequestMapping("/comp_all.do") 
 	public ModelAndView compalllist() {
+		
 		List<CompanyEntity> compinfo = compservice.complist();
 		List<RecruitEntity> comprecruit = recservice.recruitall();
-		// "view/comp/comp_all", "compinfo", compinfo
 
 		ModelAndView mav = new ModelAndView("view/comp/comp_all");
 		mav.addObject("compinfo", compinfo);
@@ -44,8 +44,7 @@ public class CPCompController {
 		return mav;
 	}
 
-	//
-	@RequestMapping("/comp_list.do") // search 버튼의 crp_nm 파람을 받아서 해당 기업의 객체들을 불러올거임.
+	@RequestMapping("/comp_list.do") 
 	public ModelAndView comppagelist(@RequestParam("page") String page, @RequestParam("crp_nm_i") String crp_nm_i,
 			HttpServletRequest req) {
 		List<CompanyEntity> compinfo = null;
@@ -73,28 +72,23 @@ public class CPCompController {
 
 		if (p > compinfo.size()) {
 			ModelAndView mv = new ModelAndView("view/comp/comp_all");
-			// System.out.println(6);
 			mv.addObject("compinfo", compservice.complist());
 			mv.addObject("cpage", 1);
-			// System.out.println(7);
 			return mv;
-
 		}
 
 		if ((compinfo.size() - p) < 10) {
-			// System.out.println(8);
 			newcomplist = compinfo.subList(p, compinfo.size());
-			// System.out.println(9);
 		} else {
-
 			newcomplist = compinfo.subList(p, p + 9);
-
 		}
+		
 		ModelAndView mav = new ModelAndView("view/comp/comp_all");
 		int returnpage = Integer.parseInt(page);
 		req.removeAttribute("compinfo");
 		mav.addObject("compinfo", newcomplist);
 		mav.addObject("cpage", returnpage);
+		
 		return mav;
 	}
 
@@ -126,46 +120,43 @@ public class CPCompController {
 
 		if (p > compinfo.size()) {
 			ModelAndView mv = new ModelAndView("view/comp/comp_all");
-			// System.out.println(6);
 			mv.addObject("compinfo", compservice.complist());
 			mv.addObject("cpage", 1);
-			// System.out.println(7);
 			return mv;
 
 		}
 
 		if ((compinfo.size() - p) < 10) {
-			// System.out.println(8);
 			newcomplist = compinfo.subList(p, compinfo.size());
-			// System.out.println(9);
 		} else {
-
 			newcomplist = compinfo.subList(p, p + 9);
-
 		}
+		
 		int returnpage = Integer.parseInt(prepage) - 1;
 		mav.addObject("compinfo", newcomplist);
 		mav.addObject("cpage", returnpage);
 		return mav;
 	}
 
-	@RequestMapping("/comp_search.do") // search 버튼의 crp_nm 파람을 받아서 해당 기업의 객체들을 불러올거임.
+	@RequestMapping("/comp_search.do") 
 	public ModelAndView complist(@RequestParam("crp_nm_i") String crp_nm_i) {
 		List<CompanyEntity> compinfo = compservice.compsearchlist(crp_nm_i);
 
 		return new ModelAndView("view/comp/comp_all", "compinfo", compinfo);
 	}
 
-	@RequestMapping("/comp_info.do") // 1.comp_detail.jsp에 기업의 title, adr, ceo_nm, phn_no, hm_url 등을 뿌림
+	@RequestMapping("/comp_info.do") 
 	public ModelAndView compinfo(@RequestParam("crp_nm_i") String crp_nm_i) {
 
 		ModelAndView compinfoo = new ModelAndView("view/comp/comp_detail");
 		List<CompanyEntity> compinfo = compservice.compinfo(crp_nm_i);
-		// HttpServletRequest, crp_nm_i를 map에 담기
-		HttpServletRequest req = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes())
-				.getRequest();
+		
+		// logging part
+		// HttpServletRequest, 조회한 기업번호를 tolog에 담기
+		HttpServletRequest req = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
 		tolog.put("crp_no", compinfo.get(0).getCrp_no());
-		// logger 생성하고 파일에 기록
+		
+		// 기업 번호 로깅 객체 생성 후 로그 내용 매핑 
 		CPLogger complogger = new CPLogger("COMP");
 		complogger.mapLogVal(req, tolog);
 
@@ -188,17 +179,5 @@ public class CPCompController {
 		List<RecruitEntity> comprecruit = compservice.comprecruit(crp_nm);
 		return new ModelAndView("view/comp/comp_detail", "comprecruit", comprecruit);
 	}
-	/*
-	 * //재무제표
-	 * 
-	 * @RequestMapping("/go_finstate.do") public ModelAndView
-	 * finstate(@RequestParam("crp_nm_i") String crp_nm_i ) { List<CompanyEntity>
-	 * finstate = compservice.finstate(crp_nm_i);
-	 * 
-	 * ModelAndView mav = new ModelAndView("view/comp/comp_detail");
-	 * mav.addObject("finstate", finstate);
-	 * 
-	 * return mav; }
-	 */
 
 }

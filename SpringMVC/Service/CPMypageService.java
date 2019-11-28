@@ -35,7 +35,6 @@ public class CPMypageService {
 	}
 
 	public List<CompanyEntity> mycomplist(String id) {
-		// TODO Auto-generated method stub
 		return mdao.mycomplist(id);
 	}
 

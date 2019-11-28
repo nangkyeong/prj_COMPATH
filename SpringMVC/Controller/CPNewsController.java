@@ -22,31 +22,24 @@ public class CPNewsController {
 	@Autowired
 	private CPNewsService cpns;
 
-	//log용 String 배열
+	// news_number, 뉴스 번호를 담을 맵 
 	private Map<String, String> tolog = new HashMap<>();
 	
-//	@Around("gonewsdetail()")
 	@RequestMapping("/news_body.do")
 	public ModelAndView gonewsdetail(@RequestParam("news_number") String number, HttpServletRequest req) {
-		//ModelAndView mav = new ModelAndView("view/news/news_body");
-		ModelAndView mav = new ModelAndView("view/news/newsdetail");
-		mav.addObject("news_number",number);
-//		news newss = cpns.getnewsbynum(number);
-		//mav.addObject("newsdetail", newss);
-//		String url = newss.getUrl();
-//		try {
-//			Document doc = Jsoup.connect(url).get();
-//			//mav.addObject("articleBodyContents", doc.select("#articleBodyContents"));
-//		} catch (IOException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-
-		// log
-		//HttpServletRequest req = ((ServletRequestAttributes)RequestContextHolder.currentRequestAttributes()).getRequest();
-		//tolog.put("news_number", number);
-		//CPLogger newslogger = new CPLogger("NEWS");
-		//newslogger.mapLogVal(req, tolog);
+		
+		ModelAndView mav = new ModelAndView("view/news/news_body");
+		news newss = cpns.getnewsbynum(number);
+		mav.addObject("newsdetail", newss);
+		
+		String url = newss.getUrl();
+		
+		try {
+			Document doc = Jsoup.connect(url).get();
+			mav.addObject("articleBodyContents", doc.select("#articleBodyContents"));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 
 		return mav;
 	}
@@ -93,28 +86,23 @@ public class CPNewsController {
 
 		if (p > newslist.size()) {
 			ModelAndView mv = new ModelAndView("view/news/news_all");
-			// System.out.println(6);
 			mv.addObject("newslist", cpns.selectall());
 			mv.addObject("cpage", 1);
-			// System.out.println(7);
 			return mv;
 
 		}
 
 		if ((newslist.size() - p) < 10) {
-			// System.out.println(8);
 			newnewslist = newslist.subList(p, newslist.size());
-			// System.out.println(9);
 		} else {
-
 			newnewslist = newslist.subList(p, p + 9);
-
 		}
 
 		int returnpage = Integer.parseInt(page);
 		req.removeAttribute("newslist");
 		mav.addObject("newslist", newnewslist);
 		mav.addObject("cpage", returnpage);
+		
 		return mav;
 	}
 
@@ -158,9 +146,11 @@ public class CPNewsController {
 			newnewslist = newslist.subList(p, p + 9);
 
 		}
+		
 		int returnpage = Integer.parseInt(prepage) - 1;
 		mav.addObject("newslist", newnewslist);
 		mav.addObject("cpage", returnpage);
+		
 		return mav;
 	}
 

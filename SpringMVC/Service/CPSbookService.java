@@ -18,7 +18,6 @@ public class CPSbookService {
 
 	// 전체리스트
 	public List<CPSbookEntity> getAllBull() {
-
 		return sbDao.getAllBull();
 	}
 
@@ -66,7 +65,6 @@ public class CPSbookService {
 	public int sbook_share(int scrapbook_num) {
 		CPSbookEntity be = new CPSbookEntity();
 		be.setScrapbook_num(scrapbook_num);
-		System.out.println("service "+be.getScrapbook_num());
 		return sbDao.sbook_share(be);
 	}
 

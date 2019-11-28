@@ -31,10 +31,10 @@ public class CPSbookController {
 
 	private Map<String, String> tolog = new HashMap<>();
 
-	//전체리스트 
+	//스크랩북 전체 리스트 
 	@RequestMapping("/scrapbook_all.do")
 	public ModelAndView sbook() {
-		//첫 페이지
+		//게시판 첫 페이지
 		List<CPSbookEntity> all = sbservice.getAllBull();
 		
 		List<CPSbookEntity> allcut = null;
@@ -44,11 +44,12 @@ public class CPSbookController {
 			allcut = all.subList(0, 10);
 		}
 		
-		//System.out.println(all);
 		ModelAndView mav = new ModelAndView("view/user/scrapbook/scrapbook_all", "all", allcut);
+		
 		mav.addObject("page", 1);
-		int endPage = (sbservice.getAllBull().size()/10)+1; //마지막페이지
+		int endPage = (sbservice.getAllBull().size()/10)+1; // 게시판 마지막 페이지
 		mav.addObject("endPage",endPage);
+		
 		return mav;
 	}
 	
@@ -58,15 +59,16 @@ public class CPSbookController {
 		int startnum = (page-1)*10;
 		List<CPSbookEntity> all = sbservice.getAllBull();
 		List<CPSbookEntity> allcut = null;
-		//System.out.println("all size bf= "+all.size());
+
 		try{
 			allcut = all.subList(startnum, startnum+10);
 		} catch(IndexOutOfBoundsException e) {
 			allcut = all.subList(startnum, all.size());
 		}
+		
 		ModelAndView mav = new ModelAndView("view/user/scrapbook/scrapbook_all", "all", allcut);
 		mav.addObject("page", page);
-		int endPage = (all.size()/10)+1; //마지막페이지
+		int endPage = (all.size()/10)+1; 
 		mav.addObject("endPage",endPage);
 		return mav;
 	}

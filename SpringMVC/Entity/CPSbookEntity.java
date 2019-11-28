@@ -108,7 +108,6 @@ public class CPSbookEntity {
 
 	public CPSbookEntity() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override
