@@ -5,29 +5,29 @@ from pyspark.context import SparkContext
 from pyspark.streaming import StreamingContext
 import ast, time, os
 
-class hi():
+class UserExposedNews():
         
-    con = pymongo.MongoClient("localhost",27777)["news"]["news_analyze"]
-    dd = {}
+    con = pymongo.MongoClient('localhost',27777)['news']['news_analyze']
+    exposedWords = {}
 
-    def wordmerge(self,userno):
-        dic = self.con.find({"news_number" : int(userno[1])},{"_id" : 0,"data" : 1,"news_number" : 1})
-        for i in dic[0]["data"]:
-            if str(i) in self.dd:
-                self.dd[i][userno[0]] += dic[0]["data"].get(i)
+    def countExposedWord(self, userno):
+        newsContent = self.con.find({ "news_number" : int(userno[1]) }, { "_id" : 0,"data" : 1, "news_number" : 1 })
+        for i in newsContent[0]["data"]:
+            if str(i) in self.exposedWords:
+                self.exposedWords[i][userno[0]] += newsContent[0]["data"].get(i)
             else:
-                self.dd[i] = { userno[0] :dic[0]["data"].get(i)} 
+                self.exposedWords[i] = { userno[0] : newsContent[0]["data"].get(i) } 
         
-    def hey(self ,user_list):
+    def processNewsLog(self, user_list):
         for i in user_list:
-            self.wordmerge(i)
-            id= i[0]
+            self.countExposedWord(i)
+            id = i[0]
             
             #전체 뉴스의 word count가 담긴 csv 읽어오기
             lt = pd.read_csv('abc.csv', encoding='euc-kr', index_col=0).transpose().rename_axis('word')
             
             #유저가 새로 확인한 뉴스의 word count가 담긴 dataframe 생성
-            rt = pd.DataFrame(self.dd).transpose().rename_axis('word')
+            rt = pd.DataFrame(self.exposedWords).transpose().rename_axis('word')
             
             #newslog.csv 없으면 생성
             if not os.path.exists('./newslog.csv'):
@@ -50,18 +50,15 @@ class hi():
 
             
 def f(x):
-    h = hi()
+    h = UserExposedNews()
     st = time.time()
     loglist = x.collect()
-    print(loglist)
-    if loglist :
-        user_list = [] #회원이 본 뉴스번호 리스트
+    if loglist:
+        user_list = [] # 회원이 본 뉴스번호 리스트
         for n in range(len(loglist)):
             if loglist[n] :
                 log = ast.literal_eval(loglist[n])
-                print('log',log)
-                id_no = (log['id'],log['news_number'])
-                print('no',id_no)
+                id_no = (log['id'], log['news_number'])
                 if id_no[0] != 'nonuser':
                     user_list.append(id_no)
 
