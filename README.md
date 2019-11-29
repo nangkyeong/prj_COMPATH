@@ -70,6 +70,6 @@ Each RDD contains newly generated logs.
 
 ### Log Extraction
 company numbers, news numbers
-### Lot Transformation
+### Saved as CSV
 **Company numbers** are saved in a Pandas Dataframe as a csv file, with columns of id, crp_no  
 **News numbers** are saved in a Pandas Dataframe as a csv file, with columns of id, news word count
