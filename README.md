@@ -1,6 +1,6 @@
 # Project COMPATH
 
-COMPATH was a team project for a web platform that provides job seekers with more information of Korean companies. 
+COMPATH is a team project for a web platform that provides job seekers with more information of Korean companies. 
 
 In this repository, you can find 3 features as follows.
 
