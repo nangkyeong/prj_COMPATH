@@ -1,6 +1,6 @@
+import time
 import pymongo
 import pandas as pd
-import time
 
 
 class TopNewsWords(object):

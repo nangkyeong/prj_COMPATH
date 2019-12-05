@@ -1,4 +1,5 @@
 import ast
+import time
 from pyspark.context import SparkContext
 from pyspark.streaming import StreamingContext
 import pandas as pd
@@ -37,7 +38,9 @@ class CrpnoLogToCSV(object):
 if __name__ == '__main__':      
     sc = SparkContext('spark://localhost:7077', 'crp_no print')
     ssc = StreamingContext(sc, 10)
-    tstream = ssc.textFileStream('hdfs://192.168.56.102:9000/cplogs/comp/190627')
+
+    date = time.strftime("%y%m%d")
+    tstream = ssc.textFileStream('hdfs://192.168.56.102:9000/cplogs/comp/'+date)
     
     logprocess = CrpnoLogToCSV()
     tstream.foreachRDD(logprocess.process_crplogs)

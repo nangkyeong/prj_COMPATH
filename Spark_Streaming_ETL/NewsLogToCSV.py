@@ -71,12 +71,12 @@ class NewsLogToCSV(object):
             if str(i) in self.chkedwords:
                 self.chkedwords[i][user_log[0]] += news_content[0]['data'].get(i)
             else:
-                self.chkedwords[i] = {user_log[0]: news_content[0]['data'].get(i) } 
+                self.chkedwords[i] = {user_log[0]: news_content[0]['data'].get(i)} 
 
     def create_newslog_csv(self, user_id):
         """Create a new newslog csv file."""
         self.user_chkedwords_df = pd.DataFrame(self.chkedwords) \
-                                .transpose().rename_axis('word')
+                                    .transpose().rename_axis('word')
         newslog_df = pd.concat(
             [self.top_newsword_df, self.user_chkedwords_df], 
             axis=1, 
@@ -91,11 +91,11 @@ class NewsLogToCSV(object):
         oldlog = pd.read_csv('./newslog.csv', encoding='euc_kr', index_col=0).transpose()
         oldlog['cnt'] = oldlog['cnt'].astype(int)
         if user_id in oldlog.columns:
-            oldlog[user_id] += self.user_chkedwords_df[user_id]
+            oldlog[user_id] += self.chkedwords_df[user_id]
             oldlog[user_id] = oldlog[user_id].fillna(0).astype(int)
             oldlog.transpose().to_csv('./newslog.csv', encoding='euc_kr', mode='w')
         else:
-            newlog = pd.concat([oldlog,self.user_chkedwords_df],axis=1, join_axes=[oldlog.index], join='inner')
+            newlog = pd.concat([oldlog,self.chkedwords_df],axis=1, join_axes=[oldlog.index], join='inner')
             newlog[user_id] = newlog[user_id].fillna(0).astype(int)
             newlog.transpose().to_csv('./newslog.csv', encoding='euc-kr')
     
