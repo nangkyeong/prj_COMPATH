@@ -21,13 +21,13 @@ class CrpnoLogToCSV(object):
 
     def crpno_extract(self, loglist):
         """Extract id numbers of companies that users checked."""
-        for n in range(len(loglist)):
-            if loglist[n] != '':
-                log = ast.literal_eval(loglist[n])
+        for logmsg in loglist:
+            if logmsg:
+                log = ast.literal_eval(logmsg)
                 user_id = log['id']
                 crpno = log['crp_no']
-            if user_id != 'nonuser':
-                self.chked_crps[user_id] = crpno
+                if user_id != 'nonuser':
+                    self.chked_crps[user_id] = crpno
 
     def each_tocsv(self):
         """Save logs as a csv file."""

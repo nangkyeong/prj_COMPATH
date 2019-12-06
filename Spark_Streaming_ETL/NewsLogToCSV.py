@@ -37,9 +37,9 @@ class NewsLogToCSV(object):
     def newsno_extract(self, loglist):
         """Extract id numbers of the news that users checked."""
         user_loglist = []
-        for i in range(len(loglist)):
-            if loglist[i] :
-                log = ast.literal_eval(loglist[i])
+        for logmsg in loglist:
+            if logmsg:
+                log = ast.literal_eval(logmsg)
                 userid_newsnum = (log['id'], log['news_number'])
                 if userid_newsnum[0] != 'nonuser':
                     user_loglist.append(userid_newsnum)
